@@ -1,2 +1,1 @@
-Ez lesz az új funkció!
-Még egy sor a funkcióról!
+Ez egy új szöveg a feature branch-ről!
