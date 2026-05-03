@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Frequency {
+  DAILY
+  WEEKLY
+}
+
+model User {
+  id           Int         @id @default(autoincrement())
+  name         String
+  email        String      @unique
+  passwordHash String
+  role         Role        @default(USER)
+  createdAt    DateTime    @default(now())
+
+  habits       Habit[]
+  systemLogs   SystemLog[]
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  isDefault   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  habits      Habit[]
+}
+
+model Habit {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  goal        String
+  frequency   Frequency
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  userId      Int
+  categoryId  Int
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category    Category  @relation(fields: [categoryId], references: [id])
+  completions HabitCompletion[]
+}
+
+model HabitCompletion {
+  id          Int      @id @default(autoincrement())
+  completedAt DateTime
+  value       Int?
+  note        String?
+
+  habitId     Int
+  habit       Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+}
+
+model SystemLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  createdAt DateTime @default(now())
+
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
