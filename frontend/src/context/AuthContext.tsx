@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let isMounted = true;
     const loadMe = async () => {
       try {
-        const response = await client.get<{ user: AuthUser }>("/api/auth/me");
+        const response = await client.get<{ user: AuthUser }>("/auth/me");
         if (isMounted) {
           setUser(response.data.user);
         }
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     try {
-      const response = await client.post<{ user: AuthUser }>("/api/auth/login", {
+      const response = await client.post<{ user: AuthUser }>("/auth/login", {
         email,
         password,
       });
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = useCallback(async (name: string, email: string, password: string) => {
     try {
-      const response = await client.post<{ user: AuthUser }>("/api/auth/register", {
+      const response = await client.post<{ user: AuthUser }>("/auth/register", {
         name,
         email,
         password,
@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = useCallback(async () => {
     try {
-      await client.post("/api/auth/logout");
+      await client.post("/auth/logout");
     } finally {
       setUser(null);
     }

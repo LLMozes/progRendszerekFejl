@@ -1,24 +1,271 @@
+import { useEffect, useMemo, useState } from "react";
+import client from "../api/client";
+import { useAuth } from "../context/AuthContext";
+
+type Category = {
+  id: number;
+  name: string;
+};
+
+type Habit = {
+  id: number;
+  title: string;
+  description: string | null;
+  goal: string;
+  frequency: "DAILY" | "WEEKLY";
+  category: Category;
+};
+
+type HabitFormState = {
+  title: string;
+  description: string;
+  goal: string;
+  frequency: "DAILY" | "WEEKLY";
+  categoryId: string;
+};
+
+const initialFormState: HabitFormState = {
+  title: "",
+  description: "",
+  goal: "",
+  frequency: "DAILY",
+  categoryId: "",
+};
+
 export default function HabitsPage() {
+  const { user, loading } = useAuth();
+  const [habits, setHabits] = useState<Habit[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [form, setForm] = useState<HabitFormState>(initialFormState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
+
+  const isReady = useMemo(() => !loading && !!user, [loading, user]);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const [habitsResponse, categoriesResponse] = await Promise.all([
+        client.get<{ habits: Habit[] }>("/habits"),
+        client.get<{ categories: Category[] }>("/categories"),
+      ]);
+      setHabits(habitsResponse.data.habits);
+      setCategories(categoriesResponse.data.categories);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load habits.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isReady) {
+      void fetchData();
+    }
+  }, [isReady]);
+
+  const resetForm = () => {
+    setForm(initialFormState);
+    setEditingId(null);
+  };
+
+  const handleChange = (field: keyof HabitFormState, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError(null);
+    setSuccess(null);
+
+    if (!form.title.trim() || !form.goal.trim() || !form.categoryId) {
+      setError("Title, goal, frequency, and category are required.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        title: form.title.trim(),
+        description: form.description.trim() || undefined,
+        goal: form.goal.trim(),
+        frequency: form.frequency,
+        categoryId: Number(form.categoryId),
+      };
+
+      if (editingId) {
+        await client.put(`/habits/${editingId}`, payload);
+        setSuccess("Habit updated.");
+      } else {
+        await client.post("/habits", payload);
+        setSuccess("Habit created.");
+      }
+
+      resetForm();
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEdit = (habit: Habit) => {
+    setEditingId(habit.id);
+    setForm({
+      title: habit.title,
+      description: habit.description ?? "",
+      goal: habit.goal,
+      frequency: habit.frequency,
+      categoryId: String(habit.category.id),
+    });
+    setSuccess(null);
+    setError(null);
+  };
+
+  const handleDelete = async (habitId: number) => {
+    setError(null);
+    setSuccess(null);
+    setIsSubmitting(true);
+    try {
+      await client.delete(`/habits/${habitId}`);
+      setSuccess("Habit deleted.");
+      await fetchData();
+      if (editingId === habitId) {
+        resetForm();
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section className="page">
+        <span className="pill">Your routines</span>
+        <h1>Habits</h1>
+        <p className="page-subtitle">Loading your session...</p>
+      </section>
+    );
+  }
+
+  if (!user) {
+    return (
+      <section className="page">
+        <span className="pill">Your routines</span>
+        <h1>Habits</h1>
+        <p className="page-subtitle">Please log in to manage your habits.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="page">
       <span className="pill">Your routines</span>
       <h1>Habits</h1>
-      <p className="page-subtitle">
-        Habit list, filters, and completion actions will be added here.
-      </p>
+      <p className="page-subtitle">Create, update, and track your habits.</p>
+
+      <form className="form" onSubmit={handleSubmit}>
+        <label className="form-field">
+          <span>Title</span>
+          <input
+            type="text"
+            value={form.title}
+            onChange={(event) => handleChange("title", event.target.value)}
+            required
+          />
+        </label>
+        <label className="form-field">
+          <span>Description</span>
+          <input
+            type="text"
+            value={form.description}
+            onChange={(event) => handleChange("description", event.target.value)}
+          />
+        </label>
+        <label className="form-field">
+          <span>Goal</span>
+          <input
+            type="text"
+            value={form.goal}
+            onChange={(event) => handleChange("goal", event.target.value)}
+            required
+          />
+        </label>
+        <label className="form-field">
+          <span>Frequency</span>
+          <select
+            value={form.frequency}
+            onChange={(event) =>
+              handleChange("frequency", event.target.value as HabitFormState["frequency"])
+            }
+          >
+            <option value="DAILY">Daily</option>
+            <option value="WEEKLY">Weekly</option>
+          </select>
+        </label>
+        <label className="form-field">
+          <span>Category</span>
+          <select
+            value={form.categoryId}
+            onChange={(event) => handleChange("categoryId", event.target.value)}
+            required
+          >
+            <option value="" disabled>
+              Select a category
+            </option>
+            {categories.map((category) => (
+              <option key={category.id} value={String(category.id)}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        {error ? <p className="form-error">{error}</p> : null}
+        {success ? <p className="form-success">{success}</p> : null}
+        <div className="form-actions">
+          <button className="form-button" type="submit" disabled={isSubmitting}>
+            {editingId ? "Update habit" : "Create habit"}
+          </button>
+          {editingId ? (
+            <button
+              type="button"
+              className="form-secondary"
+              onClick={resetForm}
+              disabled={isSubmitting}
+            >
+              Cancel edit
+            </button>
+          ) : null}
+        </div>
+      </form>
+
+      {isLoading ? <p className="page-subtitle">Loading habits...</p> : null}
+
       <div className="page-grid">
-        <div className="page-card">
-          <strong>Morning jog</strong>
-          <span>Daily goal: 20 minutes</span>
-        </div>
-        <div className="page-card">
-          <strong>Read fiction</strong>
-          <span>Daily goal: 15 pages</span>
-        </div>
-        <div className="page-card">
-          <strong>Water tracking</strong>
-          <span>Daily goal: 2 liters</span>
-        </div>
+        {habits.map((habit) => (
+          <div key={habit.id} className="page-card">
+            <strong>{habit.title}</strong>
+            <span>{habit.description || "No description"}</span>
+            <span>Goal: {habit.goal}</span>
+            <span>Frequency: {habit.frequency}</span>
+            <span>Category: {habit.category.name}</span>
+            <div className="card-actions">
+              <button type="button" onClick={() => handleEdit(habit)}>
+                Edit
+              </button>
+              <button type="button" onClick={() => handleDelete(habit.id)}>
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -420,3 +420,73 @@ A prompt jól működött, mert a meglévő backend auth végpontokra épített,
 
 További finomítás:
 A prompt kiegészítésre került az admin jogosultság kezelésével. Az admin felület elrejtésre került nem admin felhasználók elől, valamint az AdminPage komponens is védve lett frontend oldalon. Ez javítja a felhasználói élményt és összhangban van a backend jogosultságkezeléssel.
+
+
+
+## 12. Habit CRUD frontend
+
+Prompt:
+Copilot context
+
+frontend/src/api/client.ts
+frontend/src/context/AuthContext.tsx
+frontend/src/App.tsx
+frontend/src/pages/HabitsPage.tsx
+frontend/src/components/Navbar.tsx
+backend/src/routes/habit.routes.ts
+backend/src/controllers/habit.controller.ts
+backend/src/routes/admin.routes.ts
+frontend/src/pages/DashboardPage.tsx
+
+Implement the Habit CRUD frontend for my existing Habit Tracker React app.
+
+Requirements:
+
+Use the existing Axios client from src/api/client.ts
+Use the existing authentication context
+Do not change backend code
+Keep the UI simple and beginner-friendly
+Backend habit endpoints:
+
+GET /habits
+GET /habits/:id
+POST /habits
+PUT /habits/:id
+DELETE /habits/:id
+Backend admin category endpoint:
+
+GET /admin/categories
+Page to update:
+
+frontend/src/pages/HabitsPage.tsx
+Features:
+
+List the logged-in user's habits
+Show habit title, description, goal, frequency and category name
+Add a create habit form
+Add edit functionality
+Add delete functionality
+Load categories from the backend and use them in a select dropdown
+Show simple loading, success and error messages
+Redirect or show a message if the user is not logged in
+Habit form fields:
+
+title
+description
+goal
+frequency: DAILY or WEEKLY
+categoryId
+Important:
+
+The API base URL already includes /api
+Use endpoints like /habits and /admin/categories
+Use withCredentials from the existing Axios client
+Do not create complex styling
+Do not implement habit completions yet
+Do not implement statistics yet
+
+
+Értékelés:
+A prompt jól működött, mert a meglévő backend habit végpontokra épített, és külön meghatározta a szükséges felhasználói műveleteket: listázás, létrehozás, szerkesztés és törlés. A promptban külön szerepelt, hogy a goal mezőt számként kell kezelni, valamint hogy a kategóriákat legördülő listából kell kiválasztani.
+
+

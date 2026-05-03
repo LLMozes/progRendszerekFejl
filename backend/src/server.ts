@@ -8,6 +8,7 @@ import habitRoutes from "./routes/habit.routes";
 import completionRoutes from "./routes/completion.routes";
 import adminRoutes from "./routes/admin.routes";
 import statisticsRoutes from "./routes/statistics.routes";
+import categoryRoutes from "./routes/category.routes";
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/habits", habitRoutes);
 app.use("/api", completionRoutes);
+app.use("/api/categories", categoryRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/statistics", statisticsRoutes);
 
