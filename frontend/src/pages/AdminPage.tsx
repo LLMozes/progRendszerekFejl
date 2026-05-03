@@ -1,4 +1,23 @@
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 export default function AdminPage() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <section className="page">
+        <span className="pill">Admin only</span>
+        <h1>Admin console</h1>
+        <p className="page-subtitle">Loading admin access...</p>
+      </section>
+    );
+  }
+
+  if (!user || user.role !== "ADMIN") {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
     <section className="page">
       <span className="pill">Admin only</span>

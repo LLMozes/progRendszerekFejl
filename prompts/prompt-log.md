@@ -263,3 +263,160 @@ backend/src/server.ts
 Értékelés:
 A prompt jól működött, mert pontosan elkülönítette az admin funkciókat a normál felhasználói funkcióktól. A generált végpontok lefedik a felhasználókezelést, kategóriakezelést és rendszerhasználati naplók megtekintését.
 
+
+
+## 9. Statisztika API
+
+Prompt:
+Copilot context
+
+backend/prisma/schema.prisma
+backend/src/server.ts
+backend/src/middlewares/auth.middleware.ts
+backend/src/controllers/habit.controller.ts
+backend/src/controllers/completion.controller.ts
+backend/package.json
+
+Implement simple authenticated statistics endpoints for my existing Habit Tracker backend.
+
+Requirements:
+
+Use PrismaClient
+Use the existing requireAuth middleware
+Keep the existing project structure
+Do not change the Prisma schema
+Do not create frontend code
+Users can only see statistics for their own habits
+Routes:
+
+GET /api/statistics/summary
+
+return:
+total number of habits for the logged-in user
+total number of completions for the logged-in user's habits
+number of daily habits
+number of weekly habits
+GET /api/statistics/habits/:habitId
+
+return statistics for one habit only if it belongs to the logged-in user
+return:
+habit id
+habit title
+frequency
+goal
+total completions
+latest completion date
+completions grouped by date if possible
+Also:
+
+Add basic validation
+Never allow users to access another user's statistics
+Return clear error messages
+Files to create or update:
+
+backend/src/routes/statistics.routes.ts
+backend/src/controllers/statistics.controller.ts
+backend/src/server.ts
+
+Értékelés:
+A prompt jól működött, mert csak egyszerű, a projekt céljához illeszkedő statisztikai végpontokat kért. Nem bonyolította túl az elemzést, de lefedte a felhasználói igényt, hogy a teljesítéseket vissza lehessen nézni.
+
+
+
+
+## 10. Frontend alap
+
+Prompt:
+Context:
+README.md
+backend/src/server.ts
+backend/src/routes/auth.routes.ts
+backend/src/routes/habit.routes.ts
+backend/src/routes/completion.routes.ts
+backend/src/routes/statistics.routes.ts
+backend/src/routes/admin.routes.ts
+
+Create the initial React + Vite + TypeScript frontend structure for my existing Habit Tracker project.
+
+Requirements:
+
+Use the existing frontend folder
+Use React Router
+Use Axios for API calls
+Backend runs on http://localhost:5000
+Frontend runs on http://localhost:5173
+Axios must send cookies with requests because backend authentication uses sessions
+Keep the UI simple and beginner-friendly
+Do not change backend code
+Create or update:
+
+src/api/client.ts
+src/App.tsx
+src/main.tsx
+src/pages/LoginPage.tsx
+src/pages/RegisterPage.tsx
+src/pages/DashboardPage.tsx
+src/pages/HabitsPage.tsx
+src/pages/AdminPage.tsx
+src/components/Navbar.tsx
+Routes:
+
+/login
+/register
+/dashboard
+/habits
+/admin
+For now:
+
+Only create page placeholders
+Add navigation
+Do not implement forms yet
+
+Értékelés:
+A prompt jól működött, mert csak az alap frontend struktúrát kérte, nem pedig teljes funkcionalitást. Az Axios kliensnél külön meg lett adva, hogy session alapú hitelesítés miatt a cookie-k küldéséhez withCredentials szükséges.
+
+
+
+## 11. Frontend autentikáció
+
+Prompt:
+Implement frontend authentication for my existing Habit Tracker React app.
+
+Requirements:
+
+Use the existing Axios client from src/api/client.ts
+Backend auth endpoints:
+POST /auth/register
+POST /auth/login
+POST /auth/logout
+GET /auth/me
+Use session cookies, so keep withCredentials enabled
+Create an AuthContext
+Store current user in AuthContext
+On app load, call /auth/me
+Implement register form
+Implement login form
+Implement logout button in Navbar
+After successful login or register, redirect to /dashboard
+Show simple error messages
+Do not change backend code
+Keep UI simple and beginner-friendly
+IMPORTANT:
+
+The Admin page should only be visible to users with role "ADMIN"
+Hide the Admin navigation link for non-admin users
+Protect the AdminPage so non-admin users are redirected to /dashboard
+Files to create or update:
+
+frontend/src/context/AuthContext.tsx
+frontend/src/pages/LoginPage.tsx
+frontend/src/pages/RegisterPage.tsx
+frontend/src/components/Navbar.tsx
+frontend/src/pages/AdminPage.tsx
+frontend/src/App.tsx
+
+Értékelés:
+A prompt jól működött, mert a meglévő backend auth végpontokra épített, és session alapú hitelesítést valósított meg.
+
+További finomítás:
+A prompt kiegészítésre került az admin jogosultság kezelésével. Az admin felület elrejtésre került nem admin felhasználók elől, valamint az AdminPage komponens is védve lett frontend oldalon. Ez javítja a felhasználói élményt és összhangban van a backend jogosultságkezeléssel.

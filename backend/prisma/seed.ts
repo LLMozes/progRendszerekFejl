@@ -57,14 +57,14 @@ async function ensureSystemLog(
 }
 
 async function main() {
-  const passwordHash = await bcrypt.hash("Password123!", 10);
+  const passwordHash = await bcrypt.hash("Admin1234", 10);
 
   const adminUser = await prisma.user.upsert({
-    where: { email: "admin@habits.local" },
+    where: { email: "admin@example.com" },
     update: { name: "Admin User", passwordHash, role: Role.ADMIN },
     create: {
       name: "Admin User",
-      email: "admin@habits.local",
+      email: "admin@example.com",
       passwordHash,
       role: Role.ADMIN,
       createdAt: SEED_DATE,
