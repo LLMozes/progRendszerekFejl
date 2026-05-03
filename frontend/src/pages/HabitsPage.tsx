@@ -40,8 +40,10 @@ export default function HabitsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [formKey, setFormKey] = useState(0);
 
   const isReady = useMemo(() => !loading && !!user, [loading, user]);
 
@@ -71,6 +73,8 @@ export default function HabitsPage() {
   const resetForm = () => {
     setForm(initialFormState);
     setEditingId(null);
+    setNotice(null);
+    setFormKey((current) => current + 1);
   };
 
   const handleChange = (field: keyof HabitFormState, value: string) => {
@@ -80,12 +84,14 @@ export default function HabitsPage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
+    setNotice(null);
     setSuccess(null);
 
     if (!form.title.trim() || !form.goal.trim() || !form.categoryId) {
       setError("Title, goal, frequency, and category are required.");
       return;
     }
+
 
     setIsSubmitting(true);
     try {
@@ -115,20 +121,30 @@ export default function HabitsPage() {
   };
 
   const handleEdit = (habit: Habit) => {
+    const match = habit.goal.match(/\d+(?:\.\d+)?/);
+    const nextGoal = match ? match[0] : "";
+
     setEditingId(habit.id);
     setForm({
       title: habit.title,
       description: habit.description ?? "",
-      goal: habit.goal,
+      goal: nextGoal,
       frequency: habit.frequency,
       categoryId: String(habit.category.id),
     });
-    setSuccess(null);
+    setFormKey((current) => current + 1);
+    setSuccess(`Editing: ${habit.title}`);
     setError(null);
+    setNotice(
+      match
+        ? null
+        : "This habit has a non-numeric goal. Enter a number to update it."
+    );
   };
 
   const handleDelete = async (habitId: number) => {
     setError(null);
+    setNotice(null);
     setSuccess(null);
     setIsSubmitting(true);
     try {
@@ -171,13 +187,24 @@ export default function HabitsPage() {
       <h1>Habits</h1>
       <p className="page-subtitle">Create, update, and track your habits.</p>
 
-      <form className="form" onSubmit={handleSubmit}>
+      {editingId ? (
+        <div className="page-card edit-banner">
+          <strong>Editing habit</strong>
+          <span>Update the fields below and click “Update habit”.</span>
+        </div>
+      ) : null}
+
+      <form key={formKey} className="form" onSubmit={handleSubmit}>
         <label className="form-field">
           <span>Title</span>
           <input
             type="text"
             value={form.title}
+            autoFocus={Boolean(editingId)}
             onChange={(event) => handleChange("title", event.target.value)}
+            onInput={(event) =>
+              handleChange("title", (event.target as HTMLInputElement).value)
+            }
             required
           />
         </label>
@@ -187,6 +214,9 @@ export default function HabitsPage() {
             type="text"
             value={form.description}
             onChange={(event) => handleChange("description", event.target.value)}
+            onInput={(event) =>
+              handleChange("description", (event.target as HTMLInputElement).value)
+            }
           />
         </label>
         <label className="form-field">
@@ -195,6 +225,9 @@ export default function HabitsPage() {
             type="text"
             value={form.goal}
             onChange={(event) => handleChange("goal", event.target.value)}
+            onInput={(event) =>
+              handleChange("goal", (event.target as HTMLInputElement).value)
+            }
             required
           />
         </label>
@@ -228,6 +261,7 @@ export default function HabitsPage() {
           </select>
         </label>
         {error ? <p className="form-error">{error}</p> : null}
+        {notice ? <p className="form-notice">{notice}</p> : null}
         {success ? <p className="form-success">{success}</p> : null}
         <div className="form-actions">
           <button className="form-button" type="submit" disabled={isSubmitting}>
@@ -250,7 +284,10 @@ export default function HabitsPage() {
 
       <div className="page-grid">
         {habits.map((habit) => (
-          <div key={habit.id} className="page-card">
+          <div
+            key={habit.id}
+            className={`page-card${editingId === habit.id ? " is-editing" : ""}`}
+          >
             <strong>{habit.title}</strong>
             <span>{habit.description || "No description"}</span>
             <span>Goal: {habit.goal}</span>
