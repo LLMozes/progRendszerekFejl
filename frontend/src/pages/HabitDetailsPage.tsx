@@ -188,11 +188,14 @@ export default function HabitDetailsPage() {
         Log progress and track completion history for this habit.
       </p>
 
-      <button className="form-secondary" type="button" onClick={() => navigate("/habits")}>
-        Back to habits
-      </button>
+      <div className="page-section">
+        <button className="form-secondary" type="button" onClick={() => navigate("/habits")}>
+          Back to habits
+        </button>
+      </div>
 
-      <form className="form" onSubmit={handleSubmit}>
+      <div className="page-section">
+        <form className="form" onSubmit={handleSubmit}>
         <label className="form-field">
           <span>Completed at</span>
           <input
@@ -235,26 +238,29 @@ export default function HabitDetailsPage() {
             </button>
           ) : null}
         </div>
-      </form>
+        </form>
+      </div>
 
-      {isLoading ? <p className="page-subtitle">Loading completions...</p> : null}
+      <div className="page-section">
+        {isLoading ? <p className="page-subtitle">Loading completions...</p> : null}
 
-      <div className="page-grid">
-        {completions.map((completion) => (
-          <div key={completion.id} className="page-card">
-            <strong>{new Date(completion.completedAt).toLocaleString()}</strong>
-            <span>Value: {completion.value ?? "-"}</span>
-            <span>Note: {completion.note ?? "-"}</span>
-            <div className="card-actions">
-              <button type="button" onClick={() => handleEdit(completion)}>
-                Edit
-              </button>
-              <button type="button" onClick={() => handleDelete(completion.id)}>
-                Delete
-              </button>
+        <div className="page-grid">
+          {completions.map((completion) => (
+            <div key={completion.id} className="page-card">
+              <strong>{new Date(completion.completedAt).toLocaleString()}</strong>
+              <span>Value: {completion.value ?? "-"}</span>
+              <span>Note: {completion.note ?? "-"}</span>
+              <div className="card-actions">
+                <button type="button" onClick={() => handleEdit(completion)}>
+                  Edit
+                </button>
+                <button type="button" className="danger" onClick={() => handleDelete(completion.id)}>
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

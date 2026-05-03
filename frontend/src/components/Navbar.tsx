@@ -15,7 +15,9 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="nav-brand">Habit Tracker</div>
+      <NavLink to="/dashboard" className="nav-brand">
+        Habit Tracker
+      </NavLink>
       <div className="nav-links">
         <NavLink to="/dashboard" className={getNavClass}>
           Dashboard

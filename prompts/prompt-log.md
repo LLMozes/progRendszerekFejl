@@ -684,3 +684,63 @@ A prompt első változata nem működött megfelelően, mert a Copilot a prompt-
 
 
 
+## 16. Frontend UI/UX egységesítés
+
+Prompt:
+Contextbe csak frontend fájlok
+
+frontend/src/index.css
+frontend/src/components/Navbar.tsx
+frontend/src/pages/LoginPage.tsx
+frontend/src/pages/RegisterPage.tsx
+frontend/src/pages/DashboardPage.tsx
+frontend/src/pages/HabitsPage.tsx
+frontend/src/pages/HabitDetailsPage.tsx
+frontend/src/pages/AdminPage.tsx
+
+Ne add contextbe ezeket:
+
+I need actual code changes, not documentation.
+
+Do NOT edit prompts/prompt-log.md.
+Do NOT edit any markdown files.
+Do NOT write a prompt-log entry.
+Do NOT explain the task only.
+
+Modify the existing React frontend code to improve the UI/UX.
+
+Allowed files to edit:
+
+frontend/src/index.css
+frontend/src/components/Navbar.tsx
+frontend/src/pages/LoginPage.tsx
+frontend/src/pages/RegisterPage.tsx
+frontend/src/pages/DashboardPage.tsx
+frontend/src/pages/HabitsPage.tsx
+frontend/src/pages/HabitDetailsPage.tsx
+frontend/src/pages/AdminPage.tsx
+Task:
+Improve the visual design and usability of the existing app.
+
+Important:
+
+Do not change backend code.
+Do not change API endpoint paths.
+Do not change authentication logic.
+Do not remove existing functionality.
+Preserve all current API calls and state handling.
+Only improve layout, styling, spacing, forms, buttons, cards, tables and responsiveness.
+Specific improvements:
+
+Make all pages visually consistent.
+Improve the AdminPage layout significantly.
+Use cleaner cards or tables for users, categories and logs.
+Improve button styles.
+Improve input and select styles.
+Improve spacing and typography.
+Keep the existing beige/teal visual direction.
+Keep login, register, dashboard, habits, habit details and admin features working.
+Please apply the code changes directly to the existing frontend files.
+
+Értékelés:
+A prompt célja nem új funkciók létrehozása volt, hanem a meglévő frontend felület vizuális és használhatósági javítása. A promptban külön kiemeltem, hogy az API hívások, az autentikációs logika és a backend kód nem módosulhatnak, így a működő funkciók megtartása mellett javult az alkalmazás megjelenése.

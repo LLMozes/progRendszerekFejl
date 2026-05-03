@@ -233,123 +233,147 @@ export default function AdminPage() {
       {isLoading ? <p className="page-subtitle">Loading admin data...</p> : null}
       {error ? <p className="form-error">{error}</p> : null}
       {message ? <p className="form-success">{message}</p> : null}
-
-      <div className="page-card">
-        <h2>Users</h2>
-        {users.length === 0 ? (
-          <p className="page-subtitle">No users found.</p>
-        ) : (
-          <div className="page-grid">
-            {users.map((item) => (
-              <div key={item.id} className="page-card">
-                <strong>{item.name}</strong>
-                <span>{item.email}</span>
-                <span>ID: {item.id}</span>
-                <span>Created: {new Date(item.createdAt).toLocaleString()}</span>
-                <label className="form-label">
-                  Role
-                  <select
-                    className="form-input"
-                    value={roleEdits[item.id] ?? item.role}
-                    onChange={(event) =>
-                      handleRoleEdit(item.id, event.target.value as "USER" | "ADMIN")
-                    }
-                  >
-                    <option value="USER">USER</option>
-                    <option value="ADMIN">ADMIN</option>
-                  </select>
-                </label>
-                <div className="form-actions">
-                  <button type="button" onClick={() => handleUpdateRole(item.id)}>
-                    Update role
-                  </button>
-                  <button type="button" className="danger" onClick={() => handleDeleteUser(item.id)}>
-                    Delete
-                  </button>
+      <div className="page-section">
+        <div className="admin-section">
+          <div className="admin-section-header">
+            <h2>Users</h2>
+            <p className="page-subtitle">Manage accounts and roles.</p>
+          </div>
+          {users.length === 0 ? (
+            <p className="page-subtitle">No users found.</p>
+          ) : (
+            <div className="table">
+              <div className="table-row table-head">
+                <div className="table-cell">Name</div>
+                <div className="table-cell">Email</div>
+                <div className="table-cell">Role</div>
+                <div className="table-cell">Created</div>
+                <div className="table-cell">Actions</div>
+              </div>
+              {users.map((item) => (
+                <div key={item.id} className="table-row">
+                  <div className="table-cell">
+                    {item.name}
+                    <div className="page-subtitle">ID: {item.id}</div>
+                  </div>
+                  <div className="table-cell">{item.email}</div>
+                  <div className="table-cell">
+                    <select
+                      className="form-input"
+                      value={roleEdits[item.id] ?? item.role}
+                      onChange={(event) =>
+                        handleRoleEdit(item.id, event.target.value as "USER" | "ADMIN")
+                      }
+                    >
+                      <option value="USER">USER</option>
+                      <option value="ADMIN">ADMIN</option>
+                    </select>
+                  </div>
+                  <div className="table-cell">
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </div>
+                  <div className="table-actions">
+                    <button type="button" onClick={() => handleUpdateRole(item.id)}>
+                      Update
+                    </button>
+                    <button type="button" className="danger" onClick={() => handleDeleteUser(item.id)}>
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      <div className="page-card">
-        <h2>Categories</h2>
-        <form className="form" onSubmit={handleCategorySubmit}>
-          <label className="form-label">
-            Name
-            <input
-              className="form-input"
-              value={categoryForm.name}
-              onChange={(event) => handleCategoryChange("name", event.target.value)}
-              required
-            />
-          </label>
-          <label className="form-label">
-            Description
-            <input
-              className="form-input"
-              value={categoryForm.description}
-              onChange={(event) => handleCategoryChange("description", event.target.value)}
-            />
-          </label>
-          <label className="form-label checkbox">
-            <input
-              type="checkbox"
-              checked={categoryForm.isDefault}
-              onChange={(event) => handleCategoryChange("isDefault", event.target.checked)}
-            />
-            Default category
-          </label>
-          <div className="form-actions">
-            <button type="submit">{editingCategoryId ? "Save" : "Create"}</button>
-            {editingCategoryId ? (
-              <button type="button" className="secondary" onClick={handleCancelEdit}>
-                Cancel
-              </button>
-            ) : null}
+        <div className="admin-section">
+          <div className="admin-section-header">
+            <h2>Categories</h2>
+            <p className="page-subtitle">Create and edit habit categories.</p>
           </div>
-        </form>
-        {categories.length === 0 ? (
-          <p className="page-subtitle">No categories yet.</p>
-        ) : (
-          <div className="page-grid">
-            {categories.map((item) => (
-              <div key={item.id} className="page-card">
-                <strong>{item.name}</strong>
-                <span>{item.description || "No description"}</span>
-                <span>Default: {item.isDefault ? "Yes" : "No"}</span>
-                <div className="form-actions">
-                  <button type="button" onClick={() => handleCategoryEdit(item)}>
-                    Edit
-                  </button>
-                  <button type="button" className="danger" onClick={() => handleCategoryDelete(item.id)}>
-                    Delete
-                  </button>
+          <form className="form compact" onSubmit={handleCategorySubmit}>
+            <label className="form-label">
+              Name
+              <input
+                className="form-input"
+                value={categoryForm.name}
+                onChange={(event) => handleCategoryChange("name", event.target.value)}
+                required
+              />
+            </label>
+            <label className="form-label">
+              Description
+              <input
+                className="form-input"
+                value={categoryForm.description}
+                onChange={(event) => handleCategoryChange("description", event.target.value)}
+              />
+            </label>
+            <label className="form-label checkbox">
+              <input
+                type="checkbox"
+                checked={categoryForm.isDefault}
+                onChange={(event) => handleCategoryChange("isDefault", event.target.checked)}
+              />
+              Default category
+            </label>
+            <div className="form-actions">
+              <button type="submit">{editingCategoryId ? "Save" : "Create"}</button>
+              {editingCategoryId ? (
+                <button type="button" className="secondary" onClick={handleCancelEdit}>
+                  Cancel
+                </button>
+              ) : null}
+            </div>
+          </form>
+          {categories.length === 0 ? (
+            <p className="page-subtitle">No categories yet.</p>
+          ) : (
+            <div className="admin-grid">
+              {categories.map((item) => (
+                <div key={item.id} className="page-card">
+                  <strong>{item.name}</strong>
+                  <span>{item.description || "No description"}</span>
+                  <span>Default: {item.isDefault ? "Yes" : "No"}</span>
+                  <div className="form-actions">
+                    <button type="button" onClick={() => handleCategoryEdit(item)}>
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="danger"
+                      onClick={() => handleCategoryDelete(item.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      <div className="page-card">
-        <h2>System logs</h2>
-        {sortedLogs.length === 0 ? (
-          <p className="page-subtitle">No logs recorded yet.</p>
-        ) : (
-          <div className="page-grid">
-            {sortedLogs.map((item) => (
-              <div key={item.id} className="page-card">
-                <strong>{item.action}</strong>
-                <span>{new Date(item.createdAt).toLocaleString()}</span>
-                <span>
-                  User: {item.user ? `${item.user.name} (${item.user.email})` : "System"}
-                </span>
-              </div>
-            ))}
+        <div className="admin-section">
+          <div className="admin-section-header">
+            <h2>System logs</h2>
+            <p className="page-subtitle">Recent admin activity and audit trail.</p>
           </div>
-        )}
+          {sortedLogs.length === 0 ? (
+            <p className="page-subtitle">No logs recorded yet.</p>
+          ) : (
+            <div className="admin-grid">
+              {sortedLogs.map((item) => (
+                <div key={item.id} className="page-card">
+                  <strong>{item.action}</strong>
+                  <span>{new Date(item.createdAt).toLocaleString()}</span>
+                  <span>
+                    User: {item.user ? `${item.user.name} (${item.user.email})` : "System"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

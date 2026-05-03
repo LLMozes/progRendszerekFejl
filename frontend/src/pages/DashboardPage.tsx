@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import client from "../api/client";
 import { useAuth } from "../context/AuthContext";
 
@@ -14,6 +14,21 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<SummaryStats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const chartItems = useMemo(
+    () => [
+      { label: "Total habits", value: stats?.totalHabits ?? 0 },
+      { label: "Completions", value: stats?.totalCompletions ?? 0 },
+      { label: "Daily habits", value: stats?.dailyHabits ?? 0 },
+      { label: "Weekly habits", value: stats?.weeklyHabits ?? 0 },
+    ],
+    [stats]
+  );
+
+  const maxValue = useMemo(
+    () => Math.max(1, ...chartItems.map((item) => item.value)),
+    [chartItems]
+  );
 
   useEffect(() => {
     const loadStats = async () => {
@@ -61,24 +76,50 @@ export default function DashboardPage() {
       <p className="page-subtitle">
         Quick summary tiles and progress charts will appear here.
       </p>
-      {isLoading ? <p className="page-subtitle">Loading statistics...</p> : null}
-      {error ? <p className="form-error">{error}</p> : null}
-      <div className="page-grid">
+      <div className="page-section">
+        {isLoading ? <p className="page-subtitle">Loading statistics...</p> : null}
+        {error ? <p className="form-error">{error}</p> : null}
+        <div className="page-grid">
+          <div className="page-card">
+            <strong>Total habits</strong>
+            <span>{stats ? stats.totalHabits : "--"}</span>
+          </div>
+          <div className="page-card">
+            <strong>Completions</strong>
+            <span>{stats ? stats.totalCompletions : "--"}</span>
+          </div>
+          <div className="page-card">
+            <strong>Daily habits</strong>
+            <span>{stats ? stats.dailyHabits : "--"}</span>
+          </div>
+          <div className="page-card">
+            <strong>Weekly habits</strong>
+            <span>{stats ? stats.weeklyHabits : "--"}</span>
+          </div>
+        </div>
+      </div>
+      <div className="page-section">
         <div className="page-card">
-          <strong>Total habits</strong>
-          <span>{stats ? stats.totalHabits : "--"}</span>
+          <strong>Habit overview</strong>
+          <span>Quick visual snapshot of your tracking data.</span>
+          <div className="mini-chart">
+            {chartItems.map((item) => (
+              <div key={item.label} className="mini-row">
+                <span>{item.label}</span>
+                <div className="mini-bar">
+                  <div
+                    className="mini-bar-fill"
+                    style={{ width: `${(item.value / maxValue) * 100}%` }}
+                  />
+                </div>
+                <span className="mini-value">{item.value}</span>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="page-card">
-          <strong>Completions</strong>
-          <span>{stats ? stats.totalCompletions : "--"}</span>
-        </div>
-        <div className="page-card">
-          <strong>Daily habits</strong>
-          <span>{stats ? stats.dailyHabits : "--"}</span>
-        </div>
-        <div className="page-card">
-          <strong>Weekly habits</strong>
-          <span>{stats ? stats.weeklyHabits : "--"}</span>
+          <strong>Today focus</strong>
+          <span>Review your daily habits and add a completion if needed.</span>
         </div>
       </div>
     </section>

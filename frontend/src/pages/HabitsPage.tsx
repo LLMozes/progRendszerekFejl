@@ -196,7 +196,8 @@ export default function HabitsPage() {
         </div>
       ) : null}
 
-      <form key={formKey} className="form" onSubmit={handleSubmit}>
+      <div className="page-section">
+        <form key={formKey} className="form" onSubmit={handleSubmit}>
         <label className="form-field">
           <span>Title</span>
           <input
@@ -280,34 +281,37 @@ export default function HabitsPage() {
             </button>
           ) : null}
         </div>
-      </form>
+        </form>
+      </div>
 
-      {isLoading ? <p className="page-subtitle">Loading habits...</p> : null}
+      <div className="page-section">
+        {isLoading ? <p className="page-subtitle">Loading habits...</p> : null}
 
-      <div className="page-grid">
-        {habits.map((habit) => (
-          <div
-            key={habit.id}
-            className={`page-card${editingId === habit.id ? " is-editing" : ""}`}
-          >
-            <strong>{habit.title}</strong>
-            <span>{habit.description || "No description"}</span>
-            <span>Goal: {habit.goal}</span>
-            <span>Frequency: {habit.frequency}</span>
-            <span>Category: {habit.category.name}</span>
-            <div className="card-actions">
-              <button type="button" onClick={() => handleEdit(habit)}>
-                Edit
-              </button>
-              <button type="button" onClick={() => navigate(`/habits/${habit.id}`)}>
-                Details
-              </button>
-              <button type="button" onClick={() => handleDelete(habit.id)}>
-                Delete
-              </button>
+        <div className="page-grid">
+          {habits.map((habit) => (
+            <div
+              key={habit.id}
+              className={`page-card${editingId === habit.id ? " is-editing" : ""}`}
+            >
+              <strong>{habit.title}</strong>
+              <span>{habit.description || "No description"}</span>
+              <span>Goal: {habit.goal}</span>
+              <span>Frequency: {habit.frequency}</span>
+              <span>Category: {habit.category.name}</span>
+              <div className="card-actions">
+                <button type="button" onClick={() => handleEdit(habit)}>
+                  Edit
+                </button>
+                <button type="button" onClick={() => navigate(`/habits/${habit.id}`)}>
+                  Details
+                </button>
+                <button type="button" className="danger" onClick={() => handleDelete(habit.id)}>
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
