@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import client from "../api/client";
 import { useAuth } from "../context/AuthContext";
 
@@ -34,6 +35,7 @@ const initialFormState: HabitFormState = {
 
 export default function HabitsPage() {
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [form, setForm] = useState<HabitFormState>(initialFormState);
@@ -296,6 +298,9 @@ export default function HabitsPage() {
             <div className="card-actions">
               <button type="button" onClick={() => handleEdit(habit)}>
                 Edit
+              </button>
+              <button type="button" onClick={() => navigate(`/habits/${habit.id}`)}>
+                Details
               </button>
               <button type="button" onClick={() => handleDelete(habit.id)}>
                 Delete

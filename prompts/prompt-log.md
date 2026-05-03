@@ -490,3 +490,83 @@ Do not implement statistics yet
 A prompt jól működött, mert a meglévő backend habit végpontokra épített, és külön meghatározta a szükséges felhasználói műveleteket: listázás, létrehozás, szerkesztés és törlés. A promptban külön szerepelt, hogy a goal mezőt számként kell kezelni, valamint hogy a kategóriákat legördülő listából kell kiválasztani.
 
 
+
+###12.2 Habit szerkesztés javítása
+
+Prompt:
+Update the existing HabitsPage so that users can edit their habits.
+
+Requirements:
+- Do not change backend code
+- Use the existing Axios client
+- Use the existing habit endpoints
+- Add edit functionality to the existing habit list
+- Each habit should have an Edit button
+- When Edit is clicked, fill the form with the selected habit data
+- The user should be able to update:
+  - title
+  - description
+  - goal
+  - frequency
+  - categoryId
+- Submit the update with PUT /habits/:id
+- Convert goal to Number before sending it to the backend
+- Add a Cancel edit button
+- After successful update, reload the habit list
+- Show simple success and error messages
+- Keep the UI simple
+
+Értékelés:
+A frontend Habit CRUD fejlesztése közben kiderült, hogy a szerkesztés funkció külön pontosítást igényelt. A prompt célzottan csak az edit működés javítására fókuszált, így a meglévő kód átstrukturálása nélkül sikerült kiegészíteni a felületet.
+
+
+## 13. Habit completion frontend
+
+Prompt:
+Copilot context
+
+
+frontend/src/api/client.ts
+frontend/src/App.tsx
+frontend/src/pages/HabitsPage.tsx
+frontend/src/context/AuthContext.tsx
+backend/src/routes/completion.routes.ts
+backend/src/controllers/completion.controller.ts
+backend/src/routes/habit.routes.ts
+
+
+Implement the habit completion tracking frontend for my existing Habit Tracker React app.
+
+Requirements:
+- Use the existing Axios client from src/api/client.ts
+- Do not change backend code
+- Keep the UI simple and beginner-friendly
+
+Backend endpoints:
+- GET /habits/:habitId/completions
+- POST /habits/:habitId/completions
+- PUT /completions/:id
+- DELETE /completions/:id
+
+Frontend requirements:
+- Create a HabitDetailsPage
+- Add a route: /habits/:id
+- On HabitsPage, add a Details or Completions button/link for each habit
+- On HabitDetailsPage:
+  - show the selected habit id from the URL
+  - list previous completions
+  - add a form to create a new completion
+  - fields: completedAt, value, note
+  - allow deleting a completion
+  - allow editing a completion if it can be implemented simply
+  - show simple loading, success and error messages
+- Use completedAt as a datetime-local input if possible
+- Convert value to Number before sending if it is filled
+- After create, update or delete, reload the completion list
+- Redirect or show a message if the user is not logged in
+
+Értékelés:
+A prompt jól működött, mert a meglévő completion backend végpontokra épített, és a felhasználói felületen lehetővé tette a szokások teljesítésének rögzítését és visszanézését. A fejlesztés során külön figyelmet kapott, hogy a value mező számként kerüljön elküldésre.
+
+
+

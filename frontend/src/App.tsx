@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import AdminPage from "./pages/AdminPage";
 import DashboardPage from "./pages/DashboardPage";
 import HabitsPage from "./pages/HabitsPage";
+import HabitDetailsPage from "./pages/HabitDetailsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import "./App.css";
@@ -20,6 +21,7 @@ export default function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/habits" element={<HabitsPage />} />
+            <Route path="/habits/:id" element={<HabitDetailsPage />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </main>
