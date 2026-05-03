@@ -570,3 +570,36 @@ A prompt jól működött, mert a meglévő completion backend végpontokra ép�
 
 
 
+## 13. Dashboard statisztikák bekötése
+
+Prompt:
+Context Copilotba
+
+frontend/src/pages/DashboardPage.tsx
+frontend/src/api/client.ts
+frontend/src/context/AuthContext.tsx
+backend/src/routes/statistics.routes.ts
+backend/src/controllers/statistics.controller.ts
+Copilot prompt
+Update the existing DashboardPage in my Habit Tracker React app so it displays real statistics from the backend.
+
+Requirements:
+
+Use the existing Axios client from src/api/client.ts
+Do not change backend code
+Use the existing endpoint: GET /statistics/summary
+Remember that the Axios baseURL already contains /api
+Load the statistics when the DashboardPage opens
+Show loading state
+Show error message if the request fails
+Display:
+total number of habits
+total number of completions
+number of daily habits
+number of weekly habits
+Keep the existing visual style of the DashboardPage
+Replace placeholder "--" values with real data
+If the user is not logged in, show a simple message or redirect to /login
+
+Értékelés:
+A prompt jól működött, mert a már meglévő Dashboard felületet nem újragenerálta, hanem a backend statisztika végpontjához kapcsolta. A fejlesztés során külön figyelmet kapott, hogy az Axios baseURL már tartalmazza az /api előtagot, ezért a frontendben csak a /statistics/summary végpontot kellett meghívni.
