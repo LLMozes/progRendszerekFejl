@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import healthRoutes from "./routes/health.routes";
 import authRoutes from "./routes/auth.routes";
+import habitRoutes from "./routes/habit.routes";
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/habits", habitRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
