@@ -1,7 +1,9 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import session from "express-session";
 import healthRoutes from "./routes/health.routes";
+import authRoutes from "./routes/auth.routes";
 
 dotenv.config();
 
@@ -18,6 +20,19 @@ app.use(
 
 app.use(express.json());
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "dev-session-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    },
+  })
+);
+
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     message: "Habit Tracker backend is running"
@@ -25,6 +40,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/health", healthRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
