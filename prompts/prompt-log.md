@@ -866,3 +866,105 @@ A prompt jól működött, mert magyar nyelven kérte a teljes docs mappa dokume
 
 Értékelés:
 A prompt jól működött, mert pontosan meghatározta, hogy a promptelemzésnek milyen fejezeteket kell tartalmaznia. A dokumentum külön kitért a jól működő és kevésbé jól működő promptokra, valamint arra, hogy az AI által generált kódot fejlesztőként ellenőriztem és teszteltem.
+
+
+
+## 19. README véglegesítése
+
+
+
+Prompt:
+Kérlek, frissítsd és véglegesítsd a README.md fájlt a meglévő Habit Tracker / Szokáskövető alkalmazás projekthez.
+
+Fontos:
+- Magyar nyelven írj.
+- Csak a README.md fájlt módosítsd.
+- Ne módosíts forráskódot.
+- Ne írj bele nem használt technológiákat.
+- Ne említs Docker-t, MongoDB-t, JWT-t, cloud adatbázist vagy deploymentet megvalósított funkcióként.
+- A projekt lokálisan futtatható SQLite adatbázissal.
+
+A README tartalmazza ezeket a részeket:
+
+1. Projekt címe
+- Szokáskövető alkalmazás / Habit Tracker
+
+2. Rövid leírás
+- Egyetemi beadandó projekt a Programrendszerek fejlesztése tárgyhoz.
+- A felhasználók szokásokat hozhatnak létre, kezelhetnek és teljesítéseket rögzíthetnek.
+- Az admin felhasználók kezelhetik a felhasználókat, kategóriákat és rendszerlogokat.
+
+3. Technológiai stack
+- Frontend: React + Vite + TypeScript
+- Backend: Node.js + Express + TypeScript
+- Adatbázis: SQLite
+- ORM: Prisma
+- Hitelesítés: express-session + bcrypt
+
+4. Fő funkciók
+- Regisztráció
+- Bejelentkezés és kijelentkezés
+- Session alapú hitelesítés
+- Szokások CRUD kezelése
+- Szokásteljesítések kezelése
+- Dashboard statisztikák
+- Admin felhasználókezelés
+- Admin kategóriakezelés
+- Rendszerlogok megtekintése
+
+5. Projekt mappastruktúra
+Mutasd be röviden:
+- backend
+- frontend
+- docs
+- prompts
+
+6. Előfeltételek
+- Node.js
+- npm
+- Git
+- VS Code ajánlott
+
+7. Backend telepítése és futtatása
+Írd le a parancsokat:
+cd backend
+npm install
+npx prisma migrate dev
+npm run seed
+npm run dev
+
+8. Frontend telepítése és futtatása
+Írd le a parancsokat:
+cd frontend
+npm install
+npm run dev
+
+9. Alapértelmezett elérési URL-ek
+- Backend: http://localhost:5000
+- Frontend: http://localhost:5173
+
+10. Demo felhasználók
+Írd bele:
+Admin:
+email: admin@example.com
+password: Admin1234
+
+Normál felhasználó:
+ha a seed.ts alapján pontosan látható, írd bele a demo user emailt és jelszót.
+Ha nem egyértelmű, írd azt, hogy a demo felhasználók a backend/prisma/seed.ts fájlban találhatók.
+
+11. Dokumentáció
+Írd le, hogy a részletes dokumentáció a docs mappában található.
+
+12. AI használat dokumentációja
+Írd le, hogy a fejlesztés során használt promptok és promptelemzés a prompts mappában találhatók.
+
+13. Megjegyzés az adatbázishoz
+Írd le, hogy a projekt SQLite adatbázist használ, amely helyileg jön létre Prisma migrációval és seedeléssel.
+
+A README legyen világos, könnyen követhető és alkalmas arra, hogy a tanár a repository alapján el tudja indítani a projektet.
+
+
+
+Értékelés:
+A prompt jól működött, mert pontosan meghatározta, hogy a README célja a projekt telepítésének és futtatásának bemutatása. A prompt külön kérte a backend, frontend, Prisma migráció, seed adatok, demo felhasználók, dokumentáció és AI prompt mappa bemutatását.
