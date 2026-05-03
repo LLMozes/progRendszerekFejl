@@ -744,3 +744,125 @@ Please apply the code changes directly to the existing frontend files.
 
 Értékelés:
 A prompt célja nem új funkciók létrehozása volt, hanem a meglévő frontend felület vizuális és használhatósági javítása. A promptban külön kiemeltem, hogy az API hívások, az autentikációs logika és a backend kód nem módosulhatnak, így a működő funkciók megtartása mellett javult az alkalmazás megjelenése.
+
+
+## 17 Dokumentációs fájlok elkészítése
+
+Prompt:
+Context Copilotba
+
+Húzd be:
+
+docs/documentation.md
+README.md
+backend/prisma/schema.prisma
+backend/src/server.ts
+backend/src/routes/auth.routes.ts
+backend/src/routes/habit.routes.ts
+backend/src/routes/completion.routes.ts
+backend/src/routes/statistics.routes.ts
+backend/src/routes/admin.routes.ts
+frontend/src/App.tsx
+frontend/src/pages/LoginPage.tsx
+frontend/src/pages/RegisterPage.tsx
+frontend/src/pages/DashboardPage.tsx
+frontend/src/pages/HabitsPage.tsx
+frontend/src/pages/HabitDetailsPage.tsx
+frontend/src/pages/AdminPage.tsx
+
+Kérlek, készítsd el és frissítsd a projekt dokumentációs fájljait a meglévő Habit Tracker / Szokáskövető alkalmazás alapján.
+
+Fontos:
+
+Magyar nyelven írj.
+Ne módosíts forráskódot.
+Csak a docs mappában lévő markdown fájlokat hozd létre vagy módosítsd.
+Ne írj bele nem használt technológiákat.
+Ne említs MongoDB-t, JWT-t, Docker-t vagy felhős adatbázist megvalósított elemként.
+A projekt SQLite + Prisma adatbázist, Express backend-et, React + Vite frontend-et és express-session alapú hitelesítést használ.
+A dokumentáció legyen egyetemi beadandóhoz illő, világos és strukturált.
+A meglévő docs/documentation.md fájlt bővítsd ki, és tüntesd el belőle a „Később kerül kitöltésre.” részeket.
+Hozd létre vagy frissítsd ezeket a fájlokat:
+
+docs/documentation.md
+Ez legyen a fő dokumentáció. Tartalmazza:
+projekt áttekintése
+alkalmazás célja
+felhasználói és admin szerepkörök
+választott technológiai stack
+technológiai döntések indoklása
+rövid funkcionális követelményösszefoglaló
+rövid nem-funkcionális követelményösszefoglaló
+adatmodell rövid bemutatása
+REST API rövid áttekintése
+telepítés és futtatás röviden
+hivatkozás a többi docs fájlra
+docs/functional-requirements.md
+Részletesen írd le a megvalósított funkcionális követelményeket:
+regisztráció
+bejelentkezés
+kijelentkezés
+session alapú hitelesítés
+saját szokások listázása
+szokás létrehozása
+szokás szerkesztése
+szokás törlése
+teljesítések rögzítése
+teljesítések listázása
+teljesítések szerkesztése vagy törlése, ha megvalósult
+dashboard statisztikák
+admin felhasználókezelés
+admin kategóriakezelés
+rendszerlogok megtekintése
+docs/non-functional-requirements.md
+Írd le a megvalósított nem-funkcionális követelményeket:
+egyszerű használhatóság
+átlátható felhasználói felület
+frontend és backend szétválasztása
+REST API alapú kommunikáció
+session alapú hozzáférés-kezelés
+jelszóhashelés bcrypt segítségével
+karbantartható TypeScript kód
+átlátható mappastruktúra
+helyi fejlesztési környezet támogatása
+demó adatok seed script segítségével
+docs/database-model.md
+Mutasd be az adatmodellt:
+User
+Category
+Habit
+HabitCompletion
+SystemLog
+Írd le:
+
+az entitások célját
+fontosabb mezőiket
+kapcsolataikat
+miért felel meg az adatmodell a minimum 5 entitásos követelménynek
+hogyan kapcsolódnak a demó adatok a modellhez
+docs/api-overview.md
+Készíts REST API áttekintést csoportosítva:
+Auth végpontok
+Habit végpontok
+HabitCompletion végpontok
+Statistics végpontok
+Admin végpontok
+Minden végpontnál írd le röviden:
+
+HTTP metódus
+útvonal
+cél
+szükséges-e bejelentkezés
+admin jogosultság szükséges-e
+Ne írj túl hosszú dokumentációt, de legyen elég részletes ahhoz, hogy a beadandó követelményeit lefedje.
+
+
+Értékelés:
+A prompt jól működött, mert magyar nyelven kérte a teljes docs mappa dokumentációjának elkészítését, és pontosan meghatározta az egyes dokumentációs fájlok szerepét. A prompt külön kizárta a projektben nem használt technológiák, például MongoDB, JWT, Docker vagy felhős adatbázis megvalósított elemként való említését.
+
+
+
+## 18. AI promptelemzés elkészítése  - ChatGPT az egész beszélgetés alatt történő chatelésből generáltam
+
+Értékelés:
+A prompt jól működött, mert pontosan meghatározta, hogy a promptelemzésnek milyen fejezeteket kell tartalmaznia. A dokumentum külön kitért a jól működő és kevésbé jól működő promptokra, valamint arra, hogy az AI által generált kódot fejlesztőként ellenőriztem és teszteltem.
