@@ -143,3 +143,123 @@ backend/src/server.ts
 
 Értékelés:
 A prompt jól működött, mert pontosan meghatározta a szükséges CRUD végpontokat és az jogosultsági szabályt, hogy a felhasználó csak a saját szokásait kezelheti.
+
+
+
+## 7. Habit completion API
+
+Prompt:
+Context:
+backend/prisma/schema.prisma
+backend/src/server.ts
+backend/src/middlewares/auth.middleware.ts
+backend/src/routes/habit.routes.ts
+backend/src/controllers/habit.controller.ts
+backend/package.json
+
+Implement authenticated habit completion tracking API endpoints for my existing Habit Tracker backend.
+
+Requirements:
+
+Use PrismaClient
+Use the existing requireAuth middleware
+Keep the existing project structure
+Do not change the Prisma schema
+Do not create frontend code
+Routes:
+
+GET /api/habits/:habitId/completions
+
+list completions only for a habit owned by the logged-in user
+POST /api/habits/:habitId/completions
+
+create a completion only for a habit owned by the logged-in user
+fields: completedAt, value, note
+PUT /api/completions/:id
+
+update a completion only if it belongs to a habit owned by the logged-in user
+DELETE /api/completions/:id
+
+delete a completion only if it belongs to a habit owned by the logged-in user
+Also:
+
+Add SystemLog entry when a completion is created, updated or deleted
+Add basic validation
+Never allow users to access or modify another user's habit completions
+Files to create or update:
+
+backend/src/routes/completion.routes.ts
+backend/src/controllers/completion.controller.ts
+backend/src/server.ts
+
+Értékelés:
+A prompt jól működött, mert külön kezelte a szokások teljesítésének rögzítését, és meghatározta, hogy a felhasználó csak a saját szokásaihoz tartozó teljesítéseket kezelheti.
+
+
+
+
+## 8. Admin API
+
+Prompt:
+context:
+backend/prisma/schema.prisma
+backend/src/server.ts
+backend/src/middlewares/auth.middleware.ts
+backend/src/controllers/auth.controller.ts
+backend/src/controllers/habit.controller.ts
+backend/package.json
+
+Implement admin API endpoints for my existing Habit Tracker backend.
+
+Requirements:
+
+Use PrismaClient
+Use the existing requireAdmin middleware
+Keep the existing project structure
+Do not change the Prisma schema
+Do not create frontend code
+Never return passwordHash in user responses
+Routes:
+
+GET /api/admin/users
+
+list all users without passwordHash
+PUT /api/admin/users/:id/role
+
+update a user's role
+accepted roles: USER, ADMIN
+DELETE /api/admin/users/:id
+
+delete a user
+do not allow the admin to delete their own account
+GET /api/admin/categories
+
+list all categories
+POST /api/admin/categories
+
+create a category
+fields: name, description, isDefault
+PUT /api/admin/categories/:id
+
+update a category
+DELETE /api/admin/categories/:id
+
+delete a category only if it has no related habits
+GET /api/admin/system-logs
+
+list system logs
+include related user data without passwordHash
+Also:
+
+Add SystemLog entries for admin actions
+Add basic validation
+Return clear error messages
+Files to create or update:
+
+backend/src/routes/admin.routes.ts
+backend/src/controllers/admin.controller.ts
+backend/src/server.ts
+
+Értékelés:
+A prompt jól működött, mert pontosan elkülönítette az admin funkciókat a normál felhasználói funkcióktól. A generált végpontok lefedik a felhasználókezelést, kategóriakezelést és rendszerhasználati naplók megtekintését.
+

@@ -6,6 +6,7 @@ import healthRoutes from "./routes/health.routes";
 import authRoutes from "./routes/auth.routes";
 import habitRoutes from "./routes/habit.routes";
 import completionRoutes from "./routes/completion.routes";
+import adminRoutes from "./routes/admin.routes";
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/habits", habitRoutes);
 app.use("/api", completionRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
