@@ -603,3 +603,84 @@ If the user is not logged in, show a simple message or redirect to /login
 
 Értékelés:
 A prompt jól működött, mert a már meglévő Dashboard felületet nem újragenerálta, hanem a backend statisztika végpontjához kapcsolta. A fejlesztés során külön figyelmet kapott, hogy az Axios baseURL már tartalmazza az /api előtagot, ezért a frontendben csak a /statistics/summary végpontot kellett meghívni.
+
+
+
+
+
+
+
+
+
+
+## 15. Admin frontend
+
+Prompt:
+Contextbe csak ezeket add
+frontend/src/pages/AdminPage.tsx
+frontend/src/api/client.ts
+frontend/src/context/AuthContext.tsx
+frontend/src/App.tsx
+frontend/src/components/Navbar.tsx
+backend/src/routes/admin.routes.ts
+backend/src/controllers/admin.controller.ts
+
+Important:
+
+Do NOT edit prompts/prompt-log.md.
+Do NOT edit documentation.
+Do NOT only write a prompt entry.
+I need actual React/TypeScript code changes.
+Modify the AdminPage and related frontend files if needed.
+Use the existing project structure.
+
+Requirements:
+
+Use the existing Axios client from src/api/client.ts
+Use the existing AuthContext
+Do not change backend code
+Only users with role ADMIN can access this page
+If the current user is not ADMIN, redirect to /dashboard
+Keep the UI simple and beginner-friendly
+Backend admin endpoints:
+
+GET /admin/users
+PUT /admin/users/:id/role
+DELETE /admin/users/:id
+GET /admin/categories
+POST /admin/categories
+PUT /admin/categories/:id
+DELETE /admin/categories/:id
+GET /admin/system-logs
+AdminPage features:
+
+Users section
+List users
+Show id, name, email, role and createdAt
+Do not show passwordHash
+Allow changing user role between USER and ADMIN
+Allow deleting users
+Categories section
+List categories
+Create new category
+Edit category
+Delete category
+Fields: name, description, isDefault
+System logs section
+List system logs
+Show action, createdAt and related user if available
+Important API rule:
+
+The Axios baseURL already contains /api
+Use endpoints like /admin/users, not /api/admin/users
+Please apply the code changes to:
+
+frontend/src/pages/AdminPage.tsx
+frontend/src/App.tsx only if routing needs adjustment
+frontend/src/components/Navbar.tsx only if admin link visibility needs adjustment
+
+
+A prompt első változata nem működött megfelelően, mert a Copilot a prompt-log fájlt módosította a tényleges kód helyett. A javított promptban egyértelműen megadtam, hogy ne dokumentációt vagy prompt-logot szerkesszen, hanem az AdminPage React/TypeScript kódját generálja.
+
+
+
